@@ -1,0 +1,171 @@
+ZÎC v2.7 — Render.com WEB SERVICE Ayarlari
+======================================================
+
+Servis türü: Web Service   (Static Site / Background Worker / Cron DEĞİL)
+
+--------------------------------------------------------------------
+ADIM 1 — Render panosunda:  New +  →  Web Service
+--------------------------------------------------------------------
+
+--------------------------------------------------------------------
+ADIM 2 — Repoyu bağla
+--------------------------------------------------------------------
+Source Code            : GitHub → claude-astro reposunu seç
+Branch                 : main
+
+--------------------------------------------------------------------
+ADIM 3 — Kutucuklar (birebir bunları yaz)
+--------------------------------------------------------------------
+Name                   : berzah-servisi
+Project (varsa)        : boş bırakılabilir
+Language               : Python 3
+Region                 : Frankfurt (EU Central)
+Branch                 : main
+Root Directory         : ***BOŞ BIRAK***
+Build Command          : bash build.sh
+Start Command          : bash start.sh
+Instance Type          : Free
+
+--------------------------------------------------------------------
+ADIM 4 — Environment Variables  (Add Environment Variable)
+--------------------------------------------------------------------
+Key                    : PYTHON_VERSION
+Value                  : 3.11.11
+
+Başka HİÇBİR değişken gerekmez.
+API anahtarı YOK · gateway YOK · veritabanı YOK.
+(Bu servis dışarıyı aramaz; mevcut Astro Pro AI katmanı BUNU çağırır.)
+
+--------------------------------------------------------------------
+ADIM 5 — Advanced  (aç ve şunu ayarla)
+--------------------------------------------------------------------
+Health Check Path      : /healthz
+Auto-Deploy            : On Commit
+
+--------------------------------------------------------------------
+ADIM 6 — Create Web Service
+--------------------------------------------------------------------
+
+====================================================================
+KRİTİK — build'in patlamasını engelleyen tek şey
+====================================================================
+Repo kökündeki  .python-version  dosyası (içeriği: 3.11.11) SİLİNMEMELİ.
+
+Silinirse Render varsayılan Python 3.14'ü seçer; pydantic-core o sürümde
+hazır wheel bulamaz, Rust'tan derlemeye kalkar ve Render'ın salt-okunur
+cargo dizini yüzünden build şu hatayla ölür:
+
+    error: failed to create directory `/usr/local/cargo/registry/cache/...`
+    Caused by: Read-only file system (os error 30)
+    💥 maturin failed
+
+ADIM 4'teki PYTHON_VERSION değişkeni bunun ikinci emniyetidir.
+İkisi birden dursun.
+
+====================================================================
+DAĞITIM SONRASI DOĞRULAMA
+====================================================================
+1) Tarayıcıda:  https://<servis-adi>.onrender.com/healthz
+   Beklenen:    {"ok":true,"service":"BERZAH Servisi v2.0 · Mercü'l-Bahreyn",...}
+
+2) Tarayıcıda:  https://<servis-adi>.onrender.com/docs
+   FastAPI test arayüzü açılır; "Try it out" ile uçları elle deneyebilirsin.
+
+3) Terminalden tam test:
+   curl -X POST https://<servis-adi>.onrender.com/api/v1/full \
+     -H "Content-Type: application/json" \
+     -d '{"name":"Test","year":1990,"month":6,"day":21,"hour":14,
+          "minute":30,"lat":40.8,"lng":29.43,"tz_offset":3,
+          "sr_year":2026,"isim":"İsa","anne":"Fatma"}'
+
+====================================================================
+NOTLAR
+====================================================================
+• render.yaml dosyası repoda duruyor ama elle kurulumda KULLANILMAZ.
+  Render onu yalnız Blueprint akışında okur. Silmene gerek yok, zararsız.
+
+• Procfile de duruyor; Web Service'te Start Command onu ezer. Zararsız.
+
+• Free plan 15 dk boşta kalınca uykuya geçer; ilk istek ~50 sn sürebilir.
+  Astro Pro tarafından çağırırken timeout'u en az 60 sn yap.
+
+• ephe/ klasöründeki üç .se1 dosyası repoda kalırsa SWIEPH hassasiyeti
+  açılır. Silinirse motor MOSEPH'e düşer, Chiron hariç her şey çalışır.
+
+• build.sh dağıtım sırasında smoke_test.py'yi de koşar: bir modül bozuksa
+  Render servisi YAYINA ALMADAN durur. Log'da "✓ TÜM SİSTEM AYAKTA" görmelisin.
+
+====================================================================
+AI DANIŞMAN — EK ORTAM DEĞİŞKENLERİ  (v2.5)
+====================================================================
+Environment sekmesine ekleyin:
+
+  AI_BASE_URL = https://api.quatarly.cloud
+  AI_API_KEY  = <gateway anahtarınız>
+  AI_MODEL    ARTIK ZORUNLU DEGIL (v2.6). Modeller gateway'den cekilir ve
+              chatbox ustundeki acilir menuden secilir. Yazarsaniz menude
+              on secili gelir.
+
+İsteğe bağlı:
+  AI_PROTOCOL = auto | openai | anthropic     (varsayılan auto)
+  AI_PATH     = /v1/chat/completions          (yolu elle ezmek için)
+  AI_TIMEOUT      = 120   (varsayilan; yavas modeller icin artirin)
+  AI_TOTAL_BUDGET = 210   (otomatik devam turlarinin toplam suresi)
+
+KURULUM SONRASI DOĞRULAMA:
+  1) https://<servis>.onrender.com/api/v1/ai-health
+     "durum":"BAĞLANDI" ve "kullanilan_protokol" görmelisiniz.
+  2) "BAĞLANAMADI" ise dönen "hata" alanına bakın:
+       401/403   -> AI_API_KEY yanlis
+       404       -> AI_PATH'i gateway dokumanindaki yola ayarlayin
+       400 model -> AI_MODEL'i gateway'inizdeki model adiyla degistirin
+  3) Protokol otomatik secilir: once OpenAI (/v1/chat/completions),
+     olmazsa Anthropic (/v1/messages). Calisan protokol hatirlanir.
+     AI_PROTOCOL ile sabitleyebilirsiniz.
+
+GUVENLIK: Anahtari yalniz Render Environment'ta tutun. Repoya, README'ye
+veya sohbet gecmisine yazmayin. Bir yere yazildiysa gateway panelinden
+yenileyin (rotate).
+
+====================================================================
+YONETICI PAROLASI  (v3.5, istege bagli)
+====================================================================
+  ADMIN_SIFRE = <parolaniz>
+
+Tanimlanmazsa yonetici girisi KORUMASIZDIR: rol yalnizca gorunum
+ayrimi olur. Tanimlanirsa "Yonetici" dugmesi parola sorar.
+
+NOT: Misafir kisitlamasi parola olmadan da GERCEKTIR. Sunucu misafire
+hesaplanan modullerin ham verisini hic gondermez (54 KB -> 11 KB);
+analiz sunucuda tutulur, sohbet oturum kimligiyle calisir.
+
+====================================================================
+GUVENLIK  (v3.6)
+====================================================================
+  ADMIN_SIFRE          = <parola>     Yonetici girisi icin (istege bagli)
+  ZIC_ERISIM_ANAHTARI  = <anahtar>    TUM siteyi kapatir (ONERILIR)
+  ZIC_TRUST_PROXY      = 1            RENDER'DA MUTLAKA VERIN (asagiya bakin)
+  CORS_ORIGINS         = (bos birakin; gerekirse https://siteniz.onrender.com)
+
+ZIC_TRUST_PROXY NEDEN ZORUNLU
+-----------------------------
+Hiz siniri istemciyi IP ile ayirir. Render vekil arkasindadir, gercek IP
+X-Forwarded-For basligindadir. Bu degisken verilmezse tum istekler ayni
+kaynaktan geliyormus gibi gorunur ve mesru kullanicilar birbirinin
+kotasini yer. Verilirse baslik EN SAGDAN okunur; istemcinin uydurdugu
+degerler sola itildigi icin sahtecilik ise yaramaz.
+
+Dogrudan (vekilsiz) calistiriyorsaniz BOS BIRAKIN.
+
+ZIC_ERISIM_ANAHTARI tanimlanirsa siteye yalniz
+  https://<servis>.onrender.com/?anahtar=<anahtar>
+ile girilir; /healthz acik kalir (Render saglik kontrolu icin).
+API cagrilarinda "x-zic-anahtar" basligi da kabul edilir.
+
+NEDEN ONEMLI: servis herkese acik bir URL'de durur ve her analiz AI
+kotasi harcar. Bagalantiyi bilen biri kotayi yakabilir.
+
+Hiz sinirlari (bellek ici, IP basina):
+  parola denemesi : 15 dakikada 5
+  AI cagrilari    : saatte 30
+  agir hesaplar   : saatte 60

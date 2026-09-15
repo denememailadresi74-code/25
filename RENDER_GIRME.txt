@@ -1,0 +1,97 @@
+====================================================================
+ ZIC — GIRMEMENIZ GEREKEN ORTAM DEGISKENLERI
+====================================================================
+Asagidakileri Render Environment'a EKLEMEYIN. Cogu zaten dogru
+varsayilanla calisiyor; yanlis girilirse sistemi bozar.
+
+--------------------------------------------------------------------
+ A) GIRERSENIZ SISTEM BOZULUR
+--------------------------------------------------------------------
+PORT
+     Render bu degeri kendisi verir. Elle girerseniz uygulama yanlis
+     portu dinler ve servis "no open ports detected" ile ayaga kalkmaz.
+
+WEB_CONCURRENCY  /  uvicorn --workers
+     KESINLIKLE BIRDEN FAZLA ISCI CALISTIRMAYIN.
+     Misafir oturum deposu ve hiz sinirlari SUREC BELLEGINDE tutulur.
+     Iki isci olursa:
+       · misafirin sohbeti baska isciye duserse "Oturum suresi doldu"
+         (HTTP 410) hatasi alir
+       · hiz siniri isci sayisi kadar katlanir: 5 parola denemesi
+         yerine 10, 15...
+     Coklu isci gerekirse once oturum ve limit depolari Redis'e
+     tasinmalidir.
+
+PYTHONPATH  /  PYTHONHOME
+     Uygulama kendi dizininden calisir. Bu degiskenler modul
+     cozumlemesini bozar ve import hatasi verir.
+
+SE_EPHE_PATH
+     swisseph'in kendi arama degiskeni. Uygulama efemeris yolunu
+     zaten kendi ayarliyor. Buraya yanlis bir yol yazarsaniz
+     "seas_18.se1 not found" hatasi doner.
+
+PYTHON_VERSION = 3.12 / 3.13 / 3.14
+     Repodaki .python-version zaten 3.11.11 veriyor. Daha yeni bir
+     surum yazarsaniz pydantic-core icin hazir tekerlek bulunmaz,
+     Rust derlemesi baslar ve build coker.
+     (3.11.11 yazmanizda sakinca yok ama gereksizdir.)
+
+--------------------------------------------------------------------
+ B) GIRERSENIZ KORUMAYI KALDIRIRSINIZ
+--------------------------------------------------------------------
+CORS_ORIGINS = *
+     Varsayilan KAPALI ve arayuz zaten ayni kaynaktan sunuluyor.
+     Yildiz yazarsaniz herhangi bir site sizin API'nizi tarayicidan
+     cagirabilir ve AI kotanizi harcayabilir.
+     Yalniz baska bir alan adindan cagiracaksaniz o adresi yazin.
+
+ZIC_LIMIT_AUTH = 0/0
+ZIC_LIMIT_AI = 0/0
+ZIC_LIMIT_AGIR = 0/0
+ZIC_LIMIT_AUTH_KURESEL = 0/0
+     "0/0" o korumayi TAMAMEN kapatir. Yalniz sizma testi icin
+     vardir. Uretimde girilirse parola sinirsiz denenebilir ve
+     AI kotasi bir dongude tukenir.
+
+ZIC_PROXY_HOPS = 2 veya daha buyuk
+     Render'da uygulamanin onunde TEK vekil vardir; dogru deger 1
+     (varsayilan). Buyuk yazarsaniz X-Forwarded-For zincirinde
+     istemcinin yazabilecegi bir konuma bakilir ve hiz siniri
+     sahtecilikle atlatilabilir hale gelir.
+
+--------------------------------------------------------------------
+ C) GEREKSIZ — bos birakin, sistem kendisi bulur
+--------------------------------------------------------------------
+AI_MODEL
+     BOS BIRAKIN. Bos ise gateway listesindeki modeller sirayla
+     denenir; plan bir modele kapaliysa (403) o model atlanir.
+     Yazarsaniz o model ILK sirada denenir; plan kapaliysa her
+     istekte bir tur bosa gider. Belirli bir model sart degilse
+     dokunmayin.
+
+AI_PROTOCOL
+     Bos birakin. Sistem once OpenAI semasini, olmazsa Anthropic
+     semasini dener ve calisani hatirlar. Yanlis yazarsaniz
+     (or. gateway Anthropic iken "openai") her cagri hata verir.
+
+AI_PATH
+     Bos birakin. Yol otomatik secilir. Yanlis yazarsaniz her
+     istek 404 doner.
+
+AI_TIMEOUT / AI_TOTAL_BUDGET
+     Varsayilanlar 120 ve 210 saniye; olculerek ayarlandi.
+     Cok kucuk yazarsaniz uzun yanitlar yarim kalir, cok buyuk
+     yazarsaniz yavas bir gateway tum istekleri kilitler.
+
+--------------------------------------------------------------------
+ SONUC: GIRMENIZ GEREKEN TAM LISTE
+--------------------------------------------------------------------
+AI_BASE_URL          https://api.quatarly.cloud
+AI_API_KEY           <gateway anahtariniz>
+ZIC_TRUST_PROXY      1
+ADMIN_SIFRE          <yonetici parolaniz>
+ZIC_ERISIM_ANAHTARI  <site anahtari>
+
+Bes tane. Baska hicbir sey gerekmiyor.
+====================================================================

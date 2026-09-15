@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BERZAH — Mercü'l-Bahreyn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --parsomen:#E6E2D6;
+  --parsomen-koyu:#DCD7C8;
+  --parsomen-derin:#D0CABA;
+  --murekkep:#171C2B;
+  --murekkep-yumusak:#3B4256;
+  --altin:#A8823C;
+  --altin-acik:#C9A961;
+  --kabz:#2B3550;
+  --bast:#C9B27E;
+  --itici:#8C3A2E;
+  --cizgi:rgba(23,28,43,.16);
+  --cizgi-kalin:rgba(23,28,43,.32);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--parsomen);color:var(--murekkep);
+  font-family:"EB Garamond",Georgia,serif;font-size:18px;line-height:1.6;
+}
+.kap{max-width:940px;margin:0 auto;padding:0 20px 80px}
+
+/* ---------- başlık ---------- */
+.serlevha{padding:56px 0 30px;text-align:center;position:relative}
+.madalyon{
+  width:60px;height:60px;border-radius:50%;background:var(--murekkep);
+  margin:0 auto 22px;display:grid;place-items:center;
+  color:var(--parsomen);font-family:"Playfair Display",serif;font-size:27px;
+  box-shadow:0 0 0 1px var(--parsomen),0 0 0 3px var(--altin)
+}
+h1{
+  font-family:"Playfair Display",serif;font-weight:900;
+  font-size:clamp(38px,9vw,66px);line-height:.95;margin:0;letter-spacing:-.02em
+}
+.altbaslik{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.34em;
+  text-transform:uppercase;color:var(--altin);margin-top:14px
+}
+.ayet{
+  font-style:italic;color:var(--murekkep-yumusak);max-width:520px;
+  margin:26px auto 0;font-size:17px;line-height:1.65
+}
+.ayet cite{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;
+  font-size:10.5px;letter-spacing:.2em;color:var(--altin);margin-top:9px}
+
+/* ---------- form ---------- */
+.levha{
+  background:var(--parsomen-koyu);border:1px solid var(--cizgi);
+  padding:26px;margin-top:36px
+}
+.levha-bas{
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.26em;
+  text-transform:uppercase;color:var(--altin);
+  padding-bottom:12px;margin-bottom:20px;border-bottom:1px solid var(--cizgi)
+}
+.izgara{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px}
+label{display:block}
+.etiket{
+  display:block;font-family:"IBM Plex Mono",monospace;font-size:10px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--murekkep-yumusak);
+  margin-bottom:6px
+}
+input,select{
+  width:100%;padding:10px 11px;border:1px solid var(--cizgi-kalin);
+  background:var(--parsomen);color:var(--murekkep);font-size:16px;
+  font-family:"EB Garamond",serif;border-radius:0
+}
+input[type=date],input[type=time],input[type=number]{font-family:"IBM Plex Mono",monospace;font-size:15px}
+input:focus,select:focus{outline:2px solid var(--altin);outline-offset:1px}
+.ipucu{font-size:14px;color:var(--murekkep-yumusak);margin:14px 0 0;font-style:italic}
+details.ek{margin-top:20px;border-top:1px solid var(--cizgi);padding-top:16px}
+details.ek summary{
+  cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:10.5px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--altin);list-style:none
+}
+details.ek summary::-webkit-details-marker{display:none}
+details.ek summary::before{content:"+ ";font-weight:600}
+details.ek[open] summary::before{content:"− "}
+details.ek .izgara{margin-top:18px}
+
+button.hesapla{
+  width:100%;margin-top:24px;padding:16px;border:none;cursor:pointer;
+  background:var(--murekkep);color:var(--parsomen);
+  font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.28em;
+  text-transform:uppercase;transition:background .18s
+}
+button.hesapla:hover{background:var(--kabz)}
+button.hesapla:disabled{opacity:.45;cursor:wait}
+button.hesapla:focus-visible{outline:3px solid var(--altin);outline-offset:2px}
+
+.onizleme{margin-top:16px;padding:13px 15px;background:var(--parsomen);
+  border-left:3px solid var(--altin);font-family:"IBM Plex Mono",monospace;
+  font-size:13px;line-height:1.7}
+.onizleme.uyari{border-left-color:var(--itici);background:#F0E4E0}
+.onizleme b{font-weight:600}
+.onizleme .u{display:block;color:var(--itici);margin-top:7px;font-size:12.5px;
+  font-family:"EB Garamond",serif;line-height:1.5}
+
+/* ---------- durum ---------- */
+.durum{margin-top:20px;padding:15px;border-left:3px solid var(--altin);
+  background:var(--parsomen-koyu);font-size:16px}
+.durum.hata{border-left-color:var(--itici)}
+
+/* ---------- sonuç ---------- */
+#sonuc{display:none;margin-top:56px}
+.bolum{margin-top:52px}
+.bolum-bas{
+  font-family:"Playfair Display",serif;font-weight:700;font-size:27px;
+  margin:0 0 4px;letter-spacing:-.01em
+}
+.bolum-not{
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--altin);margin-bottom:20px
+}
+
+/* hüküm */
+.hukum{background:var(--murekkep);color:var(--parsomen);padding:30px 26px}
+.hukum .satir{display:flex;gap:14px;padding:11px 0;border-bottom:1px solid rgba(230,226,214,.14);
+  align-items:baseline}
+.hukum .satir:last-child{border-bottom:none}
+.hukum .rol{
+  font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--bast);min-width:74px;flex-shrink:0
+}
+.hukum .icerik{font-size:18px;line-height:1.5}
+.hukum .vurgu{color:var(--altin-acik);font-family:"IBM Plex Mono",monospace;font-size:15px}
+
+/* halka */
+.halka-kap{background:var(--parsomen-koyu);border:1px solid var(--cizgi);padding:14px}
+svg.halka{width:100%;height:auto;display:block}
+.efsane{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;
+  padding:14px 4px 4px;border-top:1px solid var(--cizgi);margin-top:10px}
+.efsane span{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;
+  display:flex;align-items:center;gap:6px;color:var(--murekkep-yumusak)}
+.nis{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+
+/* kartlar */
+.kartlar{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:15px}
+.kart{background:var(--parsomen-koyu);border:1px solid var(--cizgi);padding:19px}
+.kart h3{font-family:"Playfair Display",serif;font-size:19px;margin:0 0 10px;font-weight:700}
+.kv{display:flex;justify-content:space-between;gap:14px;padding:6px 0;
+  border-bottom:1px dotted var(--cizgi);font-size:16px;align-items:baseline}
+.kv:last-child{border-bottom:none}
+.kv b{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:500;
+  text-align:right;min-width:0;overflow-wrap:anywhere}
+.kv > span{color:var(--murekkep-yumusak)}
+.kart p{margin:9px 0 0;font-size:16px;color:var(--murekkep-yumusak)}
+.usul{font-family:"IBM Plex Mono",monospace;font-size:11px;line-height:1.5;
+  color:var(--murekkep-yumusak);margin-top:12px;padding-top:10px;
+  border-top:1px solid var(--cizgi)}
+
+/* çatal */
+.catal{border:2px solid var(--murekkep);padding:26px;background:var(--parsomen-koyu)}
+.catal .soru{font-family:"Playfair Display",serif;font-size:clamp(23px,5vw,32px);
+  line-height:1.2;margin:0 0 20px}
+.catal .cift{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:20px 0;
+  border:1px solid var(--cizgi)}
+.catal .cift div{padding:15px}
+.catal .cift div:first-child{border-right:1px solid var(--cizgi)}
+.catal .cift .ust{font-family:"IBM Plex Mono",monospace;font-size:9.5px;
+  letter-spacing:.18em;text-transform:uppercase;margin-bottom:7px}
+.yanlis .ust{color:var(--itici)} .dogru .ust{color:var(--altin)}
+.duzeltici{background:var(--parsomen);border-left:3px solid var(--altin);
+  padding:12px 15px;margin-top:11px;font-size:16px}
+
+/* kütle çubukları */
+.kutle{display:grid;grid-template-columns:104px 1fr 62px;gap:11px;align-items:center;
+  padding:6px 0;font-size:16px}
+.cubuk-yol{height:9px;background:var(--parsomen-derin);position:relative;overflow:hidden}
+.cubuk{height:100%;background:var(--kabz)}
+.cubuk.eksi{background:var(--itici)}
+.kutle .deger{font-family:"IBM Plex Mono",monospace;font-size:13px;text-align:right}
+
+/* tablo */
+.cizelge{width:100%;border-collapse:collapse;font-size:15px}
+.cizelge th{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--altin);text-align:left;padding:8px 10px;
+  border-bottom:1px solid var(--cizgi-kalin);font-weight:500}
+.cizelge td{padding:8px 10px;border-bottom:1px solid var(--cizgi)}
+.cizelge td.sayi{font-family:"IBM Plex Mono",monospace;font-size:13px}
+.sarma{overflow-x:auto}
+
+/* terazi */
+.terazi{height:8px;background:linear-gradient(90deg,var(--kabz),var(--parsomen-derin),var(--bast));
+  position:relative;margin:16px 0 8px}
+.ibre{position:absolute;top:-5px;width:2px;height:18px;background:var(--murekkep)}
+.terazi-etiket{display:flex;justify-content:space-between;
+  font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--murekkep-yumusak)}
+
+.rozet{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:10px;
+  letter-spacing:.12em;padding:2px 7px;border:1px solid var(--altin);color:var(--altin);
+  text-transform:uppercase}
+.rozet.uyari{border-color:var(--itici);color:var(--itici)}
+
+.indir{display:inline-block;margin-top:14px;padding:11px 20px;background:none;
+  border:1px solid var(--murekkep);color:var(--murekkep);cursor:pointer;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.2em;
+  text-transform:uppercase}
+.indir:hover{background:var(--murekkep);color:var(--parsomen)}
+
+footer{margin-top:64px;padding-top:22px;border-top:1px solid var(--cizgi);
+  font-size:14px;color:var(--murekkep-yumusak);line-height:1.65}
+
+@media(max-width:560px){
+  body{font-size:17px}
+  .kap{padding:0 15px 60px}
+  .levha{padding:19px}
+  .catal{padding:19px}
+  .catal .cift{grid-template-columns:1fr}
+  .catal .cift div:first-child{border-right:none;border-bottom:1px solid var(--cizgi)}
+  .hukum{padding:22px 18px}
+  .hukum .satir{flex-direction:column;gap:4px}
+  .kutle{grid-template-columns:82px 1fr 54px;font-size:15px}
+  .kv{flex-direction:column;gap:2px}
+  .kv b{text-align:left}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.ciz{stroke-dasharray:var(--uz);stroke-dashoffset:var(--uz);animation:ciz 1.5s ease-out forwards}
+@keyframes ciz{to{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<div class="kap">
+
+<header class="serlevha">
+  <div class="madalyon">ب</div>
+  <h1>BERZAH</h1>
+  <div class="altbaslik">Mercü'l-Bahreyn · Kütle Alanı Motoru</div>
+  <p class="ayet">O, iki denizi salıvermiştir; birbirine kavuşurlar. Aralarında bir berzah vardır, birbirine geçip karışmazlar.<cite>Rahmân 19–20</cite></p>
+</header>
+
+<form class="levha" id="form" autocomplete="off">
+  <div class="levha-bas">Doğum verisi</div>
+  <div class="izgara">
+    <label><span class="etiket">Ad</span><input id="ad" value="Danışan"></label>
+    <label><span class="etiket">Tarih</span><input type="date" id="tarih" value="1990-06-21" required></label>
+    <label><span class="etiket">Saat</span><input type="time" id="saat" value="14:30" required></label>
+    <label><span class="etiket">Doğum yeri</span><select id="sehir"></select></label>
+  </div>
+  <div class="izgara" style="margin-top:15px">
+    <label><span class="etiket">Enlem (K +)</span><input type="number" id="enlem" step="0.0001" value="40.8000" required></label>
+    <label><span class="etiket">Boylam (D +)</span><input type="number" id="boylam" step="0.0001" value="29.4333" required></label>
+    <label><span class="etiket">Saat dilimi</span><select id="tz"></select></label>
+    <label><span class="etiket">Ev sistemi</span>
+      <select id="ev"><option value="P">Placidus</option><option value="W">Whole Sign</option>
+      <option value="K">Koch</option><option value="R">Regiomontanus</option></select></label>
+  </div>
+
+  <div id="tzOnizleme" class="onizleme">Saat dilimi çözülüyor…</div>
+
+  <p class="ipucu">Saat yuvarlaksa (07:00, 12:30) muhtemelen tahmindir. Ev katmanı ±15 dakikadan sonra güvenilmez; Berzah kararsız denge noktasıdır, girdi hatası çıktıda büyür.</p>
+
+  <details class="ek">
+    <summary>Ek katmanlar</summary>
+    <div class="izgara">
+      <label><span class="etiket">Tam ad (ebced)</span><input id="isim" placeholder="nüfustaki imlâ"></label>
+      <label><span class="etiket">Anne adı</span><input id="anne" placeholder="isteğe bağlı"></label>
+      <label><span class="etiket">Solar Return yılı</span><input type="number" id="sryil" value="2026"></label>
+      <label><span class="etiket">Ofseti elle ez</span><input type="number" id="ofset" step="0.25" placeholder="örn. 3 — boş bırakın"></label>
+    </div>
+    <p class="ipucu">Ofseti yalnız saat diliminin yanlış çözüldüğünden eminseniz doldurun. Boş bırakılırsa IANA veritabanı yaz saati tarihçesini kendisi uygular.</p>
+  </details>
+
+  <section class="ai-secim-karti"><div class="ai-secim-bas"><div><span class="etiket">Yorumlama motoru</span><strong>AI modeli</strong></div><span class="model-kilit-rozet" id="modelKilitBilgi">Analiz başlamadan seçilir</span></div><div class="ai-secim-grid"><select id="modelSec"><option value="">modeller yükleniyor…</option></select><input id="modelElle" placeholder="Model adını yazın" style="display:none"><button type="button" class="indir model-degistir" id="modelKilidiAc" style="display:none">Yeni analiz için modeli değiştir</button></div></section>
+  <button class="hesapla" id="btn" type="submit">Alanı hesapla</button>
+  <div class="durum" id="durum" style="display:none"></div>
+</form>
+
+<main id="sonuc"></main>
+
+<footer>
+  Model dili semboliktir. “Kara delik”, “Einstein–Rosen”, “LQC”, “528 Hz” ifadeleri
+  BERZAH’ın biçimsel terminolojisidir; fiziksel nedensellik iddiası taşımaz.
+  Kadim katman ömür, ölüm tarihi veya tıbbî teşhis üretmez.
+</footer>
+</div>
+
+<script>
+const SEHIRLER=[
+["Gebze / Kocaeli",40.8000,29.4333],["Adana",37.0000,35.3213],["Adıyaman",37.7648,38.2786],
+["Afyonkarahisar",38.7507,30.5567],["Ağrı",39.7191,43.0503],["Aksaray",38.3687,34.0370],
+["Amasya",40.6499,35.8353],["Ankara",39.9334,32.8597],["Antalya",36.8969,30.7133],
+["Ardahan",41.1105,42.7022],["Artvin",41.1828,41.8183],["Aydın",37.8560,27.8416],
+["Balıkesir",39.6484,27.8826],["Bartın",41.6344,32.3375],["Batman",37.8812,41.1351],
+["Bayburt",40.2552,40.2249],["Bilecik",40.1451,29.9799],["Bingöl",38.8845,40.4967],
+["Bitlis",38.4006,42.1095],["Bolu",40.7350,31.6061],["Burdur",37.7203,30.2908],
+["Bursa",40.1826,29.0665],["Çanakkale",40.1553,26.4142],["Çankırı",40.6013,33.6134],
+["Çorum",40.5506,34.9556],["Denizli",37.7765,29.0864],["Diyarbakır",37.9144,40.2306],
+["Düzce",40.8438,31.1565],["Edirne",41.6771,26.5557],["Elazığ",38.6810,39.2264],
+["Erzincan",39.7500,39.5000],["Erzurum",39.9000,41.2700],["Eskişehir",39.7767,30.5206],
+["Gaziantep",37.0662,37.3833],["Giresun",40.9128,38.3895],["Gümüşhane",40.4386,39.5086],
+["Hakkâri",37.5744,43.7408],["Hatay / Antakya",36.2023,36.1613],["Iğdır",39.8880,44.0048],
+["Isparta",37.7648,30.5566],["İstanbul",41.0082,28.9784],["İzmir",38.4237,27.1428],
+["Kahramanmaraş",37.5858,36.9371],["Karabük",41.2061,32.6204],["Karaman",37.1759,33.2287],
+["Kars",40.6013,43.0975],["Kastamonu",41.3887,33.7827],["Kayseri",38.7312,35.4787],
+["Kilis",36.7184,37.1212],["Kırıkkale",39.8468,33.5153],["Kırklareli",41.7333,27.2167],
+["Kırşehir",39.1425,34.1709],["Kocaeli / İzmit",40.7654,29.9408],["Konya",37.8746,32.4932],
+["Kütahya",39.4242,29.9833],["Malatya",38.3552,38.3095],["Manisa",38.6191,27.4289],
+["Mardin",37.3212,40.7245],["Mersin",36.8121,34.6415],["Muğla",37.2153,28.3636],
+["Muş",38.9462,41.7539],["Nevşehir",38.6939,34.6857],["Niğde",37.9667,34.6833],
+["Ordu",40.9839,37.8764],["Osmaniye",37.0742,36.2464],["Rize",41.0201,40.5234],
+["Sakarya / Adapazarı",40.7889,30.4053],["Samsun",41.2867,36.3300],["Siirt",37.9333,41.9500],
+["Sinop",42.0231,35.1531],["Sivas",39.7477,37.0179],["Şanlıurfa",37.1591,38.7969],
+["Şırnak",37.4187,42.4918],["Tekirdağ",40.9833,27.5167],["Tokat",40.3167,36.5544],
+["Trabzon",41.0027,39.7168],["Tunceli",39.1079,39.5401],["Uşak",38.6823,29.4082],
+["Van",38.4891,43.4089],["Yalova",40.6500,29.2667],["Yozgat",39.8181,34.8147],
+["Zonguldak",41.4564,31.7987]];
+
+const TZLER=["Europe/Istanbul","Europe/Berlin","Europe/London","Europe/Paris",
+"Europe/Amsterdam","Europe/Vienna","Europe/Moscow","Europe/Athens","Europe/Sofia",
+"Asia/Baku","Asia/Tbilisi","Asia/Tehran","Asia/Baghdad","Asia/Riyadh","Asia/Dubai",
+"Africa/Cairo","America/New_York","America/Chicago","America/Los_Angeles","UTC"];
+
+const sel=document.getElementById("sehir");
+SEHIRLER.forEach((s,i)=>sel.add(new Option(s[0],i)));
+const tzSel=document.getElementById("tz");
+TZLER.forEach(z=>tzSel.add(new Option(z,z)));
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const say=v=>v==null?"—":v;
+
+sel.onchange=()=>{const c=SEHIRLER[+sel.value];
+  $("enlem").value=c[1].toFixed(4);$("boylam").value=c[2].toFixed(4);onizle();};
+
+function girdiTopla(){
+  const [Y,M,D]=$("tarih").value.split("-").map(Number);
+  const [h,mi]=$("saat").value.split(":").map(Number);
+  const g={name:$("ad").value||"Danışan",year:Y,month:M,day:D,hour:h,minute:mi,
+    lat:parseFloat($("enlem").value),lng:parseFloat($("boylam").value),
+    house_system:$("ev").value,months:18,days:365};
+  const of=parseFloat($("ofset").value);
+  if(!isNaN(of))g.tz_offset=of; else g.tz_name=tzSel.value;
+  return g;
+}
+
+let onizleZaman=null;
+async function onizle(){
+  const kutu=$("tzOnizleme");
+  let g; try{g=girdiTopla();}catch(_){return;}
+  if(!g.year||isNaN(g.lat)||isNaN(g.lng)){kutu.textContent="Tarih ve koordinat bekleniyor…";return;}
+  try{
+    const r=await fetch("/api/v1/tz-check",{method:"POST",
+      headers:{"Content-Type":"application/json"},body:JSON.stringify(g)});
+    const d=await r.json();
+    if(!r.ok){kutu.className="onizleme uyari";kutu.textContent=d.detail||"Doğrulanamadı";return;}
+    kutu.className="onizleme"+(d.uyarilar.length?" uyari":"");
+    kutu.innerHTML=`<b>${esc(d.yerel_saat)}</b> yerel → <b>${esc(d.utc_karsiligi)}</b><br>`+
+      `${esc(d.kaynak)}<br>${d.enlem.toFixed(4)}°K  ${d.boylam.toFixed(4)}°D`+
+      d.uyarilar.map(u=>`<span class="u">${esc(u)}</span>`).join("");
+  }catch(err){kutu.className="onizleme uyari";kutu.textContent="Doğrulama başarısız: "+err.message;}
+}
+["tarih","saat","enlem","boylam","ofset"].forEach(id=>
+  $(id).addEventListener("input",()=>{clearTimeout(onizleZaman);onizleZaman=setTimeout(onizle,350);}));
+tzSel.addEventListener("change",onizle);
+onizle();
+
+document.getElementById("form").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const btn=$("btn"), durum=$("durum");
+  const govde=girdiTopla();
+  govde.sr_year=parseInt($("sryil").value)||null;
+  if($("isim").value.trim())govde.isim=$("isim").value.trim();
+  if($("anne").value.trim())govde.anne=$("anne").value.trim();
+
+  btn.disabled=true;btn.textContent="Alan taranıyor…";
+  durum.style.display="block";durum.className="durum";
+  durum.textContent="Efemeris okunuyor, Φ alanı taranıyor, 360 derece üzerinde denge noktası aranıyor…";
+  try{
+    const r=await fetch("/api/v1/full",{method:"POST",
+      headers:{"Content-Type":"application/json"},body:JSON.stringify(govde)});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.detail||("Sunucu "+r.status));
+    durum.style.display="none";
+    ciz(d);
+    $("sonuc").style.display="block";
+    $("sonuc").scrollIntoView({behavior:"smooth",block:"start"});
+  }catch(err){
+    durum.className="durum hata";
+    durum.textContent="Hesaplanamadı: "+err.message+" — tarih, saat ve konumu kontrol edin.";
+  }finally{btn.disabled=false;btn.textContent="Alanı hesapla";}
+});
+
+/* ============ imza: Φ ALAN HALKASI ============ */
+const BURC=["Koç","Boğa","İkizler","Yengeç","Aslan","Başak","Terazi","Akrep","Yay","Oğlak","Kova","Balık"];
+const GLIF={"Güneş":"☉","Ay":"☽","Merkür":"☿","Venüs":"♀","Mars":"♂","Jüpiter":"♃",
+  "Satürn":"♄","Uranüs":"♅","Neptün":"♆","Plüton":"♇"};
+
+function halka(v2){
+  const CX=200,CY=200,R_DIS=183,R_BURC=168,R_IC=136,R_ORTA=94,GENLIK=36;
+  const P=v2.phi_alani.ornek;
+  const xy=(lon,r)=>{const a=(lon-90)*Math.PI/180;return[CX+r*Math.cos(a),CY+r*Math.sin(a)];};
+
+  // Φ eğrisi: yüksek alan İÇERİ çöker (kuyu), negatif alan DIŞARI kabarır
+  const yaricap=p=>R_ORTA+GENLIK*(0.5-p)*2;
+  let yol="";
+  for(let i=0;i<=360;i++){
+    const [x,y]=xy(i,yaricap(P[i%360]));
+    yol+=(i?"L":"M")+x.toFixed(1)+","+y.toFixed(1);
+  }
+  yol+="Z";
+
+  // burç kadranı
+  let tik="";
+  for(let s=0;s<12;s++){
+    const [x1,y1]=xy(s*30,R_BURC),[x2,y2]=xy(s*30,R_DIS);
+    tik+=`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="var(--cizgi-kalin)" stroke-width="1"/>`;
+    const [tx,ty]=xy(s*30+15,(R_BURC+R_DIS)/2);
+    tik+=`<text x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" font-size="8" fill="#3B4256" text-anchor="middle" dominant-baseline="central" font-family="IBM Plex Mono,monospace">${BURC[s].slice(0,3)}</text>`;
+  }
+
+  // gezegenler: çakışanları kademeli yarıçapa dağıt
+  const siralı=[...v2.kutleler].sort((a,b)=>a.lon-b.lon);
+  const KADEME=[R_IC+24,R_IC+9,R_IC-6];
+  let sonLon=-99,kat=0,gez="";
+  siralı.forEach(m=>{
+    if(m.lon-sonLon<13){kat=(kat+1)%3;}else{kat=0;}
+    sonLon=m.lon;
+    const r=KADEME[kat], [x,y]=xy(m.lon,r);
+    const yc=6.5+Math.min(4.5,Math.abs(m.m)*0.7);
+    // konumdan işaretçiye ince bağ çizgisi
+    const [lx,ly]=xy(m.lon,R_BURC-1);
+    gez+=`<line x1="${lx.toFixed(1)}" y1="${ly.toFixed(1)}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--cizgi-kalin)" stroke-width=".6"/>`;
+    gez+=m.retro
+      ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${yc.toFixed(1)}" fill="var(--parsomen)" stroke="var(--itici)" stroke-width="1.6"/>
+         <text x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="9.5" fill="var(--itici)" text-anchor="middle" dominant-baseline="central">${GLIF[m.gezegen]||"·"}</text>`
+      : `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${yc.toFixed(1)}" fill="var(--kabz)"/>
+         <text x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="9.5" fill="#E6E2D6" text-anchor="middle" dominant-baseline="central">${GLIF[m.gezegen]||"·"}</text>`;
+  });
+
+  const kd=v2.KD.lon, ad=v2.AD.lon, b=v2.berzah;
+  const [kx,ky]=xy(kd,yaricap(P[Math.round(kd)%360]));
+  const [ax,ay]=xy(ad,yaricap(P[Math.round(ad)%360]));
+
+  let berz="";
+  if(b){
+    const [bx,by]=xy(b.lon,yaricap(P[Math.round(b.lon)%360]));
+    berz=`<rect x="${(bx-6.5).toFixed(1)}" y="${(by-6.5).toFixed(1)}" width="13" height="13"
+      fill="var(--parsomen)" stroke="var(--altin)" stroke-width="2.4"
+      transform="rotate(45 ${bx.toFixed(1)} ${by.toFixed(1)})"/>`;
+  }
+
+  return `<svg class="halka" viewBox="0 0 400 400" role="img" aria-label="Φ alan halkası: Kara Delik, Ak Delik ve Berzah noktalarının zodyak üzerindeki dağılımı">
+    <defs><radialGradient id="kuyu"><stop offset="0%" stop-color="#0B0F1A" stop-opacity=".85"/><stop offset="100%" stop-color="#0B0F1A" stop-opacity="0"/></radialGradient></defs>
+    <circle cx="200" cy="200" r="${R_DIS}" fill="none" stroke="var(--cizgi-kalin)" stroke-width="1"/>
+    <circle cx="200" cy="200" r="${R_BURC}" fill="none" stroke="var(--cizgi)" stroke-width="1"/>
+    <circle cx="200" cy="200" r="${R_IC}" fill="none" stroke="var(--cizgi)" stroke-width=".7"/>
+    <circle cx="200" cy="200" r="${R_ORTA}" fill="none" stroke="var(--cizgi)" stroke-width=".8" stroke-dasharray="2 5"/>
+    ${tik}
+    <line x1="${kx.toFixed(1)}" y1="${ky.toFixed(1)}" x2="${ax.toFixed(1)}" y2="${ay.toFixed(1)}" stroke="var(--murekkep)" stroke-width="1" stroke-dasharray="5 4" opacity=".45"/>
+    <path d="${yol}" fill="rgba(43,53,80,.09)" stroke="var(--murekkep)" stroke-width="1.8" class="ciz" style="--uz:1500"/>
+    ${gez}
+    <circle cx="${kx.toFixed(1)}" cy="${ky.toFixed(1)}" r="30" fill="url(#kuyu)"/>
+    <circle cx="${kx.toFixed(1)}" cy="${ky.toFixed(1)}" r="8.5" fill="#0B0F1A"/>
+    <circle cx="${ax.toFixed(1)}" cy="${ay.toFixed(1)}" r="8" fill="var(--parsomen)" stroke="var(--altin)" stroke-width="2.6"/>
+    ${berz}
+  </svg>
+  <div class="efsane">
+    <span><i class="nis" style="background:#0B0F1A"></i>Kara Delik — sebep</span>
+    <span><i class="nis" style="background:var(--parsomen);box-shadow:inset 0 0 0 2.4px var(--altin)"></i>Ak Delik — şikâyet</span>
+    <span><i class="nis" style="background:var(--altin);border-radius:2px;transform:rotate(45deg)"></i>Berzah — karar</span>
+    <span><i class="nis" style="background:var(--kabz)"></i>Çekici kütle</span>
+    <span><i class="nis" style="background:var(--parsomen);box-shadow:inset 0 0 0 1.6px var(--itici)"></i>İtici (retro)</span>
+  </div>`;
+}
+
+/* ============ yardımcı çiziciler ============ */
+const kv=(k,v)=>`<div class="kv"><span>${esc(k)}</span><b>${esc(v)}</b></div>`;
+function kart(baslik,satirlar,metin,usul){
+  return `<div class="kart"><h3>${esc(baslik)}</h3>${satirlar||""}
+    ${metin?`<p>${esc(metin)}</p>`:""}${usul?`<div class="usul">${esc(usul)}</div>`:""}</div>`;
+}
+function tablo(basliklar,satirlar){
+  return `<div class="sarma"><table class="cizelge"><thead><tr>${
+    basliklar.map(b=>`<th>${esc(b)}</th>`).join("")}</tr></thead><tbody>${
+    satirlar.map(r=>`<tr>${r.map((c,i)=>`<td class="${i?"sayi":""}">${c}</td>`).join("")}</tr>`).join("")
+  }</tbody></table></div>`;
+}
+
+/* ============ ana çizici ============ */
+function ciz(d){
+  const v2=d.berzah_v2, kb=d.kabzbast_v1_m66_74, dn=d.deneme_modulleri,
+        kd_=d.kadim_katman, hd=d.human_design, b=v2.berzah;
+  const kurt=v2.kurtarici&&v2.kurtarici[0];
+  let H="";
+
+  /* 1 — hüküm */
+  H+=`<section class="bolum" style="margin-top:0"><div class="hukum">
+    <div class="satir"><span class="rol">Şikâyet</span><span class="icerik">Ak Delik <span class="vurgu">${esc(v2.AD.konum)}</span>${v2.AD.ev?` · ${v2.AD.ev}. ev`:""} — danışanın getirdiği cümle buradan çıkar.</span></div>
+    <div class="satir"><span class="rol">Sebep</span><span class="icerik">Kara Delik <span class="vurgu">${esc(v2.KD.konum)}</span>${v2.KD.ev?` · ${v2.KD.ev}. ev`:""} — söylemediği şey burada.</span></div>
+    ${b?`<div class="satir"><span class="rol">Karar</span><span class="icerik">Berzah <span class="vurgu">${esc(b.konum)}</span>${b.ev?` · ${b.ev}. ev`:""} — ${esc(b.tur)}, asimetri ${esc(b.asimetri)}×</span></div>`:""}
+    <div class="satir"><span class="rol">Talimat</span><span class="icerik">${kurt
+      ?`<span class="vurgu">${esc(kurt.gezegen)}</span> Kara Delik'e ${esc(kurt.aci)}° (altın açıdan ${esc(kurt.sapma)}° sapma) — ${esc(kurt.durum)}.`
+      :`Altın açı adayı hesaplanamadı.`}</span></div>
+  </div></section>`;
+
+  /* 2 — halka */
+  H+=`<section class="bolum"><h2 class="bolum-bas">Alan halkası</h2>
+    <div class="bolum-not">Φ(λ) · yüksek alan içeri çöker</div>
+    <div class="halka-kap">${halka(v2)}</div></section>`;
+
+  /* 3 — çatal */
+  if(b){
+    H+=`<section class="bolum"><h2 class="bolum-bas">Çatal</h2>
+      <div class="bolum-not">${esc(b.iki_deniz.a)} ↔ ${esc(b.iki_deniz.b)} · ${esc(b.kapsam)}</div>
+      <div class="catal">
+        <p class="soru">“${esc(b.catalin_cumlesi)}”</p>
+        ${kv("Çatalın adı",b.catalin_adi)}
+        ${kv("Saf iki-deniz eşiği",b.saf_esik)}
+        ${kv("Alan sapması",b.alan_sapmasi+"°")}
+        ${kv("En yakın gezegen",b.en_yakin_gezegen+"°")}
+        ${kv("Denge",b.denge_tipi||"—")}
+        ${b.sahne?kv("Sahne",b.sahne):""}
+        ${b.tetikleyici?kv("Tetikleyici",b.tetikleyici):""}
+        ${kv("Kararsızlık dF/dλ",b.kararsizlik_dF)}
+        <div class="cift">
+          <div class="yanlis"><div class="ust">Yanlış refleks</div>${esc(b.yanlis_refleks)}</div>
+          <div class="dogru"><div class="ust">Berzah hamlesi</div>${esc(b.berzah_hamlesi)}</div>
+        </div>
+        ${b.guven?`<div class="duzeltici">${esc(b.guven)}</div>`:""}
+        ${(b.duzelticiler||[]).map(x=>`<div class="duzeltici">${esc(x)}</div>`).join("")}
+      </div></section>`;
+  }
+
+  /* 4 — kütleler */
+  const enb=Math.max(...v2.kutleler.map(m=>Math.abs(m.m)));
+  H+=`<section class="bolum"><h2 class="bolum-bas">Kütleler</h2>
+    <div class="bolum-not">Asalet × hız × açısallık × görünürlük × deklinasyon · retro işareti çevirir</div>
+    <div class="kart">${v2.kutleler.map(m=>`
+      <div class="kutle"><span>${GLIF[m.gezegen]||""} ${esc(m.gezegen)}</span>
+      <span class="cubuk-yol"><span class="cubuk ${m.m<0?"eksi":""}" style="width:${(Math.abs(m.m)/enb*100).toFixed(0)}%"></span></span>
+      <span class="deger">${m.m>0?"+":""}${m.m.toFixed(2)}</span></div>`).join("")}</div></section>`;
+
+  /* 5 — mercekleme + ikizler + spektrum */
+  let ek="";
+  if(v2.mercekleme.length)ek+=kart("Mercekleme",
+    v2.mercekleme.slice(0,4).map(l=>kv(l.gezegen+(l.cift_goruntu?" ★":""),l.gercek+" → "+l.gorunen)).join(""),
+    v2.mercekleme.some(l=>l.cift_goruntu)?"★ Einstein halkası: bu tema hayatta iki ayrı yerde belirir ve kişi ikisini aynı şey olarak görmez.":null);
+  if(v2.yapisal_ikizler.length)ek+=kart("Yapısal ikizler",
+    v2.yapisal_ikizler.slice(0,4).map(t=>kv(t.a+" ↔ "+t.b,"kapı "+t.kapi_a+"/"+t.kapi_b+" · H"+t.hamming)).join(""),
+    "Açı yokken bile bir çizgi farkıyla bağlı çiftler.");
+  const anlamli=v2.oz_modul_spektrumu.filter(s=>s.fdr);
+  ek+=kart("Öz-modül spektrumu",
+    (anlamli.length?anlamli:v2.oz_modul_spektrumu.slice(0,3))
+      .map(s=>kv("M = "+s.M+"°","R "+s.R+" · p "+s.p+(s.fdr?" ✓":""))).join(""),
+    anlamli.length?"FDR'den geçen modüller. Uranyen 90° bu listede yoksa kişinin dial'ı 90 değildir."
+                  :"Hiçbir zirve FDR eşiğini geçmedi — bu haritada baskın öz-modül yok.");
+  if(v2.asal_acilar.length)ek+=kart("Asal açılar",
+    v2.asal_acilar.slice(0,4).map(a=>kv(a.a+" — "+a.b,a.kat+"×(360/"+a.asal+") = "+a.aci+"°")).join(""),
+    "İndirgenemez açılar: hiçbir alt harmoniğe bölünmez.");
+  H+=`<section class="bolum"><h2 class="bolum-bas">Alanın kenarları</h2>
+    <div class="bolum-not">Mercekleme · ikizler · spektrum · asal kanallar</div>
+    <div class="kartlar">${ek}</div></section>`;
+
+  /* 6 — Kabz/Bast 66-74 */
+  const eks=kb.m66_67_kabz_bast.eksen, net=eks.net_egrilik;
+  const konum=Math.max(0,Math.min(100,50+net*2.2));
+  H+=`<section class="bolum"><h2 class="bolum-bas">Kabz / Bast</h2>
+    <div class="bolum-not">Modül 66–74 · uzay-zaman katmanı</div>
+    <div class="kart">
+      <div class="terazi"><span class="ibre" style="left:${konum.toFixed(1)}%"></span></div>
+      <div class="terazi-etiket"><span>Kabz · kara delik</span><span>Eşik</span><span>Bast · ak delik</span></div>
+      <p style="margin-top:14px"><b>${esc(eks.kutup)}</b> — Σκ·m = ${esc(net)}</p>
+    </div>
+    <div class="kartlar" style="margin-top:15px">
+      ${kb.m68_einstein_rosen.length?kart("Birincil köprü (m68)",
+        kb.m68_einstein_rosen.slice(0,3).map(x=>kv(x.kabz+" → "+x.bast,"güç "+x.guc)).join(""),
+        kb.m68_einstein_rosen[0].cumle):""}
+      ${kart("Kuramoto & LQC (m70·m72)",
+        kv("Faz uyumu C",kb.m70_kuramoto.C)+kv("ρ/ρc",kb.m72_lqc.rho_orani)+
+        kv("Durum",kb.m72_lqc.durum)+kv("Anlık sıçrama",kb.m73_anlik_sicrama))}
+      ${kart("528 Hz imza (m71)",
+        kv("Kök ton",kb.m71_528hz.kok_ton)+kv("Frekans",kb.m71_528hz.kok_hz+" Hz")+
+        kv("Pürüzlülük",kb.m71_528hz.puruzluluk))}
+      ${kb.m69_ufuk_bogaz.length?kart("Ufuk / boğaz (m69)",
+        kb.m69_ufuk_bogaz.slice(0,4).map(x=>kv(x.cisim,x.isaret.join(", "))).join("")):""}
+      ${kb.solar_return?kart("Solar Return "+kb.solar_return.yil,
+        kv("Δ eğrilik",kb.solar_return.delta_egrilik)+kv("Yön",kb.solar_return.yon)+
+        kv("Köprü yılı",kb.solar_return.kopru_yili?"EVET":"hayır")):""}
+    </div>
+    ${kb.m74_gecit.pencereler.length?`<div style="margin-top:15px" class="kart">
+      <h3>Tayy-i Mekân pencereleri (m74)</h3>
+      ${tablo(["Tarih","Geçit","C","Sıçrama","ρ/ρc"],
+        kb.m74_gecit.pencereler.slice(0,6).map(w=>[esc(w.tarih),w.gecit_skoru,w.C,w.sicrama,w.rho_orani]))}
+      <div class="usul">Geçit skoru = 0.45·sıçrama + 0.30·C + 0.25·(ρ/ρc)</div></div>`:""}
+  </section>`;
+
+  /* 7 — deneme modülleri */
+  const D=[];
+  D.push(kart("Kader Rezonans Noktası",kv("KRN",dn.krn.KRN.konum)+kv("Ev",say(dn.krn.KRN.ev))+
+    kv("Anti-KRN",dn.krn.Anti_KRN.konum)+kv("Skor",dn.krn.skor+" · "+dn.krn.seviye),null,dn.krn.yontem));
+  D.push(kart("Vahdet Noktası",kv("Nokta",dn.vahdet.vahdet_noktasi?dn.vahdet.vahdet_noktasi.konum:"—")+
+    kv("R indeksi",dn.vahdet.R_indeksi)+kv("Baskın harmonik","H"+dn.vahdet.baskin_harmonik.H),dn.vahdet.rejim));
+  D.push(kart("Mizan Alanı",
+    (dn.mizan.sekineler.slice(0,3).map(s=>kv("Sekîne",s.konum)).join(""))+
+    (dn.mizan.berzahlar.slice(0,2).map(s=>kv("Berzah",s.konum)).join("")),
+    "Tepeler makam, çukurlar eşiktir."));
+  D.push(kart("Asabiyye Matrisi",
+    kv("Bağlılık dilimi","%"+dn.asabiyye.yuzdelik)+
+    kv("λ₂ (Fiedler)",dn.asabiyye.ic_baglilik_lambda2)+
+    kv("Bağ sayısı",dn.asabiyye.kenar_sayisi+" / 45")+
+    kv("Blok",dn.asabiyye.ada_sayisi)+
+    kv("Reis",dn.asabiyye.reis)+kv("Menteşe",dn.asabiyye.mentese)+
+    (dn.asabiyye.yalnizlar&&dn.asabiyye.yalnizlar.length?kv("Yalnız",dn.asabiyye.yalnizlar.join(", ")):"")+
+    (dn.asabiyye.en_guclu_baglar||[]).slice(0,3).map(e=>kv(e.a+" – "+e.b,e.aci+" "+e.orb+"°")).join(""),
+    dn.asabiyye.yorum+(dn.asabiyye.ada_sayisi>1&&dn.asabiyye.bloklar
+      ?" · Bloklar: "+dn.asabiyye.bloklar.map(x=>x.join("+")).join(" | "):"")+
+    " · Fay hattı: "+(dn.asabiyye.fay_hatti.kamp_A||[]).join("+")+" ↔ "+(dn.asabiyye.fay_hatti.kamp_B||[]).join("+")));
+  D.push(kart("Arş Ekseni",kv("Eğim",dn.ars_ekseni.egim_derece+"°")+
+    kv("Çıkıntı",dn.ars_ekseni.cikinti.cisim),dn.ars_ekseni.yon));
+  D.push(kart("Felek Saati",dn.felek_saati.en_yavas_saatler.slice(0,4)
+    .map(c=>kv(c.cift,c.periyot_yil+" yıl"+(c.kavusum_efemeris?" · "+c.kavusum_efemeris:""))).join(""),
+    dn.felek_saati.rezonant_kilitler.length?"Rezonant kilit: "+dn.felek_saati.rezonant_kilitler[0].oran:null));
+  D.push(kart("Ayna Ekseni",kv("Eksen",dn.ayna_ekseni.eksen.konum)+
+    kv("Simetri",dn.ayna_ekseni.simetri_skoru)+kv("Gizli ikiz",dn.ayna_ekseni.gizli_ikizler.length),
+    dn.ayna_ekseni.gizli_ikizler.length?dn.ayna_ekseni.gizli_ikizler.map(t=>t.a+"↔"+t.b).join(", "):null));
+  D.push(kart("Devr-i Daim",(dn.devri_daim.tecdid_pencereleri||[]).slice(0,4)
+    .map(t=>kv(t.tarih,"%"+t.benzerlik)).join(""),"Desenin gökte yeniden kurulduğu yıllar."));
+  D.push(kart("Nokta-i Süveyda",kv("Süveyda",dn.suveyda.suveyda.konum)+
+    kv("Kalp–küll farkı",dn.suveyda.kalp_kull_farki+"°")+kv("Çeken aykırı",dn.suveyda.ceken_aykiri),
+    dn.suveyda.yorum));
+  D.push(kart("Mizâc Pusulası",kv("Baskın hılt",dn.mizac_pusulasi.baskin_hilt)+
+    Object.entries(dn.mizac_pusulasi.bunye_m0).map(([k,v])=>kv(k,v)).join(""),
+    dn.mizac_pusulasi.bakim_aylari.length?"Bakım ayları: "+dn.mizac_pusulasi.bakim_aylari.slice(0,4).join(", "):null));
+  D.push(kart("Vuslat Kapıları",(dn.vuslat_kapilari.vuslat_kapilari||[]).slice(0,4)
+    .map(g=>kv(g.tarih,g.faz+" · "+g.puan)).join("")||"<p>Ufukta kapı yok.</p>"));
+  D.push(kart("İkbal Merdiveni",kv("Zirve",dn.ikbal_merdiveni.zirve.ay+" · "+dn.ikbal_merdiveni.zirve.irtifa)+
+    kv("Konsolidasyon",dn.ikbal_merdiveni.konsolidasyon.ay)+
+    (dn.ikbal_merdiveni.muhur_tarihleri||[]).slice(0,3).map(m=>kv(m.tarih,m.muhur)).join("")));
+  D.push(kart("Sahib-Kırân",(dn.sahib_kiran.pencereler||[]).slice(0,4)
+    .map(w=>kv(w.ay,w.tip.replace("Kırân-ı ",""))).join("")||"<p>Kesişen pencere yok.</p>",
+    "Kavuşan gezegenler değil, kavuşan takvimler."));
+  D.push(kart("Nokta-i İcâbet",kv("İcâbet",dn.nokta_i_icabet.icabet.konum)+
+    kv("Ev",say(dn.nokta_i_icabet.icabet.ev))+kv("İbtilâ",dn.nokta_i_icabet.ibtila.konum),
+    dn.nokta_i_icabet.icabet.anlam));
+  D.push(kart("Nokta-i Noksan",kv("Noksan",dn.nokta_i_noksan.noksan.konum)+
+    kv("Unsur",dn.nokta_i_noksan.noksan.unsur)+kv("Derinlik",dn.nokta_i_noksan.noksan.derinlik+" · "+dn.nokta_i_noksan.noksan.derinlik_ad),
+    dn.nokta_i_noksan.anlam));
+  D.push(kart("Sevk-i Felek v2",kv("Merkez",dn.sevk_i_felek_v2.merkez.konum)+
+    kv("dR/dt",dn.sevk_i_felek_v2.kabz_bast_ekseni.dR_dt)+
+    kv("Dümenci",dn.sevk_i_felek_v2.dumenci)+kv("Lenger",dn.sevk_i_felek_v2.lenger),
+    dn.sevk_i_felek_v2.faz_portresi));
+  H+=`<section class="bolum"><h2 class="bolum-bas">Deneme modülleri</h2>
+    <div class="bolum-not">On altı teknik</div>
+    <div class="kartlar">${D.join("")}</div></section>`;
+
+  /* 8 — kadim */
+  const lab=kd_.kadim_lab, hv=kd_.huviyet_muhru, it=kd_.isim_tecellisi;
+  let K=kart("Hüviyet Mührü",kv("Bütünlük",hv.butunluk_endeksi)+kv("Gerilim",hv.gerilim_endeksi)+
+    kv("Kimlik",hv.muhur_kimligi.split(" ")[0]),hv.muhur_kimligi);
+  K+=kart("Hyleg & hudûd",kv("Hyleg adayı",lab.hyleg.aday)+kv("Konum",lab.hyleg.konum)+
+    kv("Ev",lab.hyleg.ev),lab.etik_ilke);
+  K+=kart("Kırân-ı Ekber",kv("Sıradaki kavuşum",lab.kiran_i_ekber.siradaki_kavusum||"—")+
+    kv("Konum",lab.kiran_i_ekber.siradaki_kavusum_konum||"—")+
+    kv("Unsur devri",lab.kiran_i_ekber.unsur_devri||"—")+
+    kv("Şahsî ev",say(lab.kiran_i_ekber.sahsi_ev)),lab.kiran_i_ekber.not);
+  if(lab.tasyir&&lab.tasyir.length)K+=kart("Tasyîr",lab.tasyir.slice(0,5)
+    .map(t=>kv(t.yonlendirilen+" → "+t.vaad_edici,t.yil+" · "+t.yas+" yaş")).join(""),
+    "Sembolik 1°/yıl yönlendirme.");
+  if(lab.ihtiyarat_30gun&&lab.ihtiyarat_30gun.length)K+=kart("İhtiyârât · 30 gün",
+    lab.ihtiyarat_30gun.slice(0,5).map(i=>kv(i.tarih,i.kalite.split(" ")[0])).join(""));
+  if(it)K+=kart("İsim Tecellîsi",kv("Ebced",it.ebced.ebced)+kv("İsim derecesi",it.isim_derecesi.konum)+
+    kv("Ev",say(it.isim_derecesi.ev))+kv("Vahdet hizası",it.vahdet_hizasi_derece+"°"),it.mizan_konumu);
+  H+=`<section class="bolum"><h2 class="bolum-bas">Kadim katman</h2>
+    <div class="bolum-not">Arap–Osmanlı laboratuvarı · araştırma amaçlı</div>
+    <div class="kartlar">${K}</div></section>`;
+
+  /* 9 — human design */
+  H+=`<section class="bolum"><h2 class="bolum-bas">Human Design</h2>
+    <div class="bolum-not">Kanal tabanlı tanım</div>
+    <div class="kartlar">
+      ${kart(hd.tip.tr,kv("Strateji",hd.strateji)+kv("Profil",hd.profil)+kv("Tanım",hd.tanim)+
+        kv("Kanal sayısı",hd.kanallar.length),hd.otorite.tr)}
+      ${kart("Merkezler",kv("Tanımlı",hd.tanimli_merkezler.join(", ")||"—")+
+        kv("Açık",hd.acik_merkezler.join(", ")||"—"),
+        hd.kanallar.length?"Kanallar: "+hd.kanallar.join(" · "):null)}
+      ${kart("Not-self tuzakları",hd.not_self_tuzaklari.map(t=>kv(t.tuzak,"")).join(""),
+        hd.not_self_tuzaklari.map(t=>t.aciklama).join(" "))}
+    </div></section>`;
+
+  /* 10 — ham veri */
+  H+=`<section class="bolum"><h2 class="bolum-bas">Ham veri</h2>
+    <div class="bolum-not">${esc(d.girdi.an)} · UTC${d.girdi.tz>=0?"+":""}${esc(d.girdi.tz)} · ev ${esc(d.girdi.ev_sistemi)}</div>
+    <div class="kart" style="margin-bottom:14px">${kv("Saat dilimi kaynağı",d.girdi.tz_kaynak)}</div>
+    <button class="indir" id="indirBtn">JSON indir</button></section>`;
+
+  $("sonuc").innerHTML=H;
+  document.getElementById("indirBtn").onclick=()=>{
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(new Blob([JSON.stringify(d,null,2)],{type:"application/json"}));
+    a.download="berzah-"+(d.girdi.ad||"harita").replace(/\s+/g,"-").toLowerCase()+".json";
+    a.click();URL.revokeObjectURL(a.href);
+  };
+}
+</script>
+</body>
+</html>

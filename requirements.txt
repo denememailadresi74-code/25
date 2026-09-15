@@ -1,0 +1,10 @@
+# Python 3.11.11 (.python-version ile sabitlendi) — hepsi hazır wheel, Rust derlemesi YOK
+fastapi>=0.115,<0.117
+uvicorn>=0.32,<0.35
+pydantic>=2.9,<3
+pyswisseph==2.10.3.2
+tzdata>=2024.2
+# Opsiyonel: lat/lng'den saat dilimi çözümü. numpy+h3 çeker, build'i ~2 dk uzatır.
+# İstemci tz_name veya tz_offset gönderiyorsa GEREKSİZDİR.
+# timezonefinder>=6.5
+reportlab

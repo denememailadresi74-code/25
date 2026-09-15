@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: berzah-servisi
+    runtime: python
+    plan: free
+    region: frankfurt
+    branch: main
+    buildCommand: bash build.sh
+    startCommand: bash start.sh
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      # Ücretsiz Render web service kalıcı disk sunmaz. Bu nedenle aşağıdaki
+      # ZIC_VERI_DIZINI yalnız ücretli persistent disk bağlandığında açılmalıdır.
+      # - key: ZIC_VERI_DIZINI
+      #   value: /var/data/zic
+    # Persistent Disk örneği (ücretli plan gerekir):
+    # disk:
+    #   name: zic-veri
+    #   mountPath: /var/data/zic
+    #   sizeGB: 1

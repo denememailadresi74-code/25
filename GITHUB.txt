@@ -1,0 +1,51 @@
+====================================================================
+ GITHUB'A YUKLEME
+====================================================================
+"Yowza, that's a lot of files. Try uploading fewer than 100 at a time."
+
+Bu, GitHub'in WEB SURUKLE-BIRAK yukleyicisinin sinirlamasidir: tek
+seferde en fazla 100 dosya. Deponun kendisinde dosya sayisi siniri
+YOKTUR.
+
+v5.3'te paket 289 dosyadan 47'ye dusuruldu (244 ulke dosyasi ikiye
+birlestirildi), yani artik web yukleyici de calisir.
+
+--------------------------------------------------------------------
+ YOL 1 — GIT KOMUT SATIRI  (onerilen)
+--------------------------------------------------------------------
+  cd berzah_service
+  git init
+  git add .
+  git commit -m "ZIC v5.3"
+  git branch -M main
+  git remote add origin https://github.com/<kullanici>/<depo>.git
+  git push -u origin main
+
+Sonraki guncellemeler:
+  git add . && git commit -m "aciklama" && git push
+
+--------------------------------------------------------------------
+ YOL 2 — GITHUB DESKTOP  (komut satiri istemiyorsaniz)
+--------------------------------------------------------------------
+desktop.github.com -> File > Add Local Repository -> klasoru sec
+-> Publish repository. Dosya sayisi sinirlamasi yoktur.
+
+--------------------------------------------------------------------
+ YOL 3 — WEB YUKLEYICI  (artik mumkun)
+--------------------------------------------------------------------
+47 dosya 100'un altinda. Klasor yapisini korumak icin once "app"
+klasorunu, sonra kok dizindeki dosyalari surukleyin.
+
+--------------------------------------------------------------------
+ YUKLENMEMESI GEREKENLER
+--------------------------------------------------------------------
+.gitignore bunlari zaten disarida tutar:
+  __pycache__/  *.pyc      derleme onbellegi
+  app/data/defter.db*      on-kayit defteri
+
+DIKKAT: defter.db danisan tahminlerini icerir. Depo herkese aciksa
+bu dosya ASLA yuklenmemeli. .gitignore'u silmeyin.
+
+Anahtarlariniz zaten kodda degil, Render ortam degiskenlerindedir.
+RENDER_ENV.txt yalnizca hangi degiskenin gerektigini anlatir.
+====================================================================

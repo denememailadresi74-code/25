@@ -1,0 +1,130 @@
+====================================================================
+ ZIC v12.6 — RENDER ORTAM DEGISKENLERI
+====================================================================
+Render -> servisiniz -> Environment -> "Add Environment Variable"
+Adi SOLDAN, degeri SAGDAN girilir. Sonra "Save Changes".
+
+
+====================================================================
+ A · ZORUNLU
+====================================================================
+  AI_API_KEY              <ana ag gecidi anahtariniz>
+  ADMIN_SIFRE             <en az 20 karakter, rastgele>
+  ZIC_ERISIM_ANAHTARI     <site giris anahtari>
+  ZIC_TRUST_PROXY         1
+
+ZIC_TRUST_PROXY: Render vekil arkasinda calisir. Bu olmadan oran
+siniri butun kullanicilari tek IP sanar ve herkesi birden keser.
+
+
+====================================================================
+ B · YEDEK SAGLAYICILAR — "Danismana ulasilamiyor" hatasinin ilaci
+====================================================================
+Bu hata zincirdeki BUTUN saglayicilar dustugunde cikar. Tek
+saglayiciyla calisiyorsaniz o dustugu an sistem durur.
+
+EN AZ IKI TANE tanimlayin. Sistem sirayla dener; biri duserse
+otomatik otekine gecer, 5 dakika sonra duseni tekrar yoklar.
+
+--- DeepSeek (ucuz, hizli, Turkcesi iyi) ---
+  DEEPSEEK_API_KEY        sk-...
+  DEEPSEEK_MODEL          deepseek-chat            (istege bagli)
+  Anahtar: platform.deepseek.com -> API Keys
+
+--- Google Gemini (comert ucretsiz kota) ---
+  GEMINI_API_KEY          AIza...
+  GEMINI_MODEL            gemini-2.0-flash         (istege bagli)
+  Anahtar: aistudio.google.com/apikey
+
+--- NVIDIA NIM (ucretsiz kredi, acik kaynak modeller) ---
+  NVIDIA_API_KEY          nvapi-...
+  NVIDIA_MODEL            meta/llama-3.3-70b-instruct   (istege bagli)
+  Anahtar: build.nvidia.com -> hesap -> API Keys
+
+--- Kimi / Moonshot (uzun baglam) ---
+  KIMI_API_KEY            sk-...
+  KIMI_MODEL              kimi-k2-0905-preview     (istege bagli)
+  Anahtar: platform.moonshot.ai -> API Keys
+  Cin ici hesapsaniz:  KIMI_BASE_URL=https://api.moonshot.cn/v1
+
+--- Anthropic / OpenAI dogrudan ---
+  ANTHROPIC_API_KEY       sk-ant-...
+  OPENAI_API_KEY          sk-...
+
+ZINCIR SIRASI (ustten alta denenir):
+  gateway -> anthropic -> openai -> deepseek -> gemini -> nvidia -> kimi
+
+Anahtari olmayan saglayici zincire hic girmez. DeepSeek'i birinci
+siraya almak isterseniz AI_API_KEY'i bos birakin.
+
+
+====================================================================
+ C · ISTEGE BAGLI
+====================================================================
+  ZIC_DANISMAN            <PDF kapaginda gorunecek adiniz>
+
+  ZIC_DANISMAN_DOGUM      1997-09-27 20:41,40.8022,29.4306
+      Temas acisi modulu icin. Bicim:
+      "YYYY-AA-GG SS:DD,enlem,boylam[,saat_dilimi]"
+      Saat dilimi yazilmazsa Europe/Istanbul varsayilir.
+      Tanimsizsa modul sessizce atlanir.
+
+  AI_MODEL                <ana ag gecidinde kullanilacak model>
+      Gateway'in /v1/models ucu kapaliysa gerekir.
+
+
+====================================================================
+ D · ASLA GIRMEYIN
+====================================================================
+  AI_TIMEOUT          Render vekili 100 sn'de keser; sistem 75 sn'ye
+                      ayarli. Buyutmek calismaz, kucultmek uzun
+                      bolumleri yarida keser.
+  AI_TOTAL_BUDGET     Ayni sebep.
+  WEB_CONCURRENCY     Oturumlar surec belleginde. Birden cok isci
+                      acarsaniz kullanici bir istekte oturumunu
+                      bulur, otekinde bulamaz.
+  PORT                Render kendi atar.
+  PYTHONPATH          Gerekmiyor.
+  SE_EPHE_PATH        Efemeris dosyalari pakette geliyor.
+  PYTHON_VERSION      runtime.txt'te tanimli.
+  ZIC_LIMIT_*         Uretimde varsayilan sinirlar acik kalmali.
+
+
+====================================================================
+ E · HATA TESHISI
+====================================================================
+"Danismana su an ulasilamiyor" alirsaniz once hangi saglayicinin
+neden dustugune bakin:
+
+  1. Yonetici olarak girin
+  2. Tarayici konsolunda:
+       fetch('/api/v1/saglayici-sina',{method:'POST',
+         headers:{'Content-Type':'application/json'},body:'{}'})
+         .then(r=>r.json()).then(console.log)
+
+Cikti her saglayici icin ayri satir verir:
+
+  gateway   dustu      gateway: ulasilamadi (https://...): timeout
+  deepseek  calisiyor  tamam
+  gemini    dustu      gemini 401: invalid api key
+
+Ne yapacaginiz buradan belli olur:
+  "ulasilamadi"     -> saglayici kapali ya da adres yanlis
+  "401"             -> anahtar gecersiz
+  "429"             -> kota doldu; bekleyin ya da saglayici ekleyin
+  "model not found" -> o saglayici icin *_MODEL tanimlayin
+
+Anlik durum:  GET /api/v1/saglayici
+
+
+====================================================================
+ F · EN KISA KURULUM
+====================================================================
+Sifirdan kuruyorsaniz su dordu yeterli:
+
+  AI_API_KEY            <ana anahtariniz>
+  DEEPSEEK_API_KEY      <yedek — ucretsiz katman var>
+  ADMIN_SIFRE           <uzun ve rastgele>
+  ZIC_TRUST_PROXY       1
+
+Bu dortle sistem tam calisir ve ana saglayici dusse bile durmaz.

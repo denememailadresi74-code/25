@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="tr" data-tema="bauhaus">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F0EEE8">
+<meta name="color-scheme" content="light">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>İsa ile astrolojiye farklı bakış</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=Bodoni+Moda:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/stil.css">
+</head>
+<body>
+<div class="giris" id="giris" role="dialog" aria-modal="true" aria-label="Giriş">
+  <div class="tema-sec giris-tema" role="group" aria-label="Görünüm">
+    <button type="button" data-t="bauhaus" aria-pressed="true">Bauhaus</button>
+    <button type="button" data-t="brutalist" aria-pressed="false">Brutalist</button>
+    <button type="button" data-t="rasat" aria-pressed="false">Rasat</button>
+    <button type="button" data-t="minyatur" aria-pressed="false">Minyatür</button>
+      <span class="tema-ayrac"></span>
+      <button type="button" data-t="okuma" aria-pressed="false" title="Uzun metin için: geniş satır aralığı, sıcak kâğıt">Okuma</button>
+      <button type="button" data-t="gece" aria-pressed="false" title="Akşam seansı için: mavi ışık düşük">Gece</button>
+      <button type="button" data-t="karsitlik" aria-pressed="false" title="Yorgun göz / projeksiyon: saf karşıtlık">Karşıtlık</button>
+      <span class="boy-sec" role="group" aria-label="Yazı boyutu">
+        <button type="button" data-boy="" aria-pressed="true" title="Normal yazı">A</button>
+        <button type="button" data-boy="buyuk" aria-pressed="false" title="Büyük yazı">A</button>
+        <button type="button" data-boy="cok-buyuk" aria-pressed="false" title="Çok büyük yazı">A</button>
+      </span>
+  </div>
+  <div class="giris-ic">
+    <svg class="amblem" viewBox="0 0 44 44" aria-hidden="true" style="width:52px;height:52px">
+      <circle cx="22" cy="22" r="20.5" fill="none" stroke="#14110F" stroke-width="1.6"/>
+      <path d="M22 1.5A20.5 20.5 0 0 1 42.5 22H22Z" fill="var(--amblem-1,#E0301E)"/>
+      <path d="M22 22h20.5A20.5 20.5 0 0 1 22 42.5Z" fill="var(--amblem-2,#1B4FA0)"/>
+      <circle cx="22" cy="22" r="6.4" fill="var(--amblem-3,#F2B705)" stroke="currentColor" stroke-width="1.6"/>
+      <circle cx="22" cy="22" r="1.9" fill="currentColor"/>
+    </svg>
+    <h1 class="giris-baslik">İsa ile astrolojiye<br>farklı bakış</h1>
+    <p class="giris-alt">Nasıl devam etmek istersiniz?</p>
+    <div class="giris-secim">
+      <button type="button" class="rol-kart" data-rol="yonetici">
+        <span class="rol-ad">Yönetici</span>
+        <span class="rol-ac">Operasyon merkezini açar: MİZAN-5 öncelik rotası,
+          kategori kümeleri, teknik sağlık sinyalleri, Solar Return bağlamı ve
+          bölüm bazlı AI analizleri aynı çalışma alanında yönetilir.</span>
+      </button>
+      <button type="button" class="rol-kart misafir" data-rol="misafir">
+        <span class="rol-ad">Misafir</span>
+        <span class="rol-ac">Analiz modunu seçin, haritanızı görün ve
+          danışmana dilediğinizi sorun. Teknik modül dökümü gösterilmez.</span>
+      </button>
+    </div>
+    <div id="girisParola" style="display:none;margin-top:22px">
+      <label><span class="etiket">Yönetici parolası</span>
+        <input type="password" id="parola" autocomplete="current-password"></label>
+      <button type="button" class="hesapla" id="parolaGir" style="margin-top:14px">Gir</button>
+      <p class="ipucu" id="parolaHata" style="color:var(--kirmizi);display:none"></p>
+    </div>
+  </div>
+</div>
+
+<div class="kap" id="uygulama" style="display:none">
+
+<div class="yazdir-bas" id="yazdirBas"></div>
+
+<header class="serlevha">
+  <div class="ust-serit">
+    <div class="marka">
+      <svg class="amblem" viewBox="0 0 44 44" aria-hidden="true">
+        <circle cx="22" cy="22" r="20.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M22 1.5A20.5 20.5 0 0 1 42.5 22H22Z" fill="var(--amblem-1,#E0301E)"/>
+        <path d="M22 22h20.5A20.5 20.5 0 0 1 22 42.5Z" fill="var(--amblem-2,#1B4FA0)"/>
+        <circle cx="22" cy="22" r="6.4" fill="var(--amblem-3,#F2B705)" stroke="currentColor" stroke-width="1.6"/>
+        <circle cx="22" cy="22" r="1.9" fill="currentColor"/>
+      </svg>
+      <div class="marka-yazi">
+        <span class="ad">İsa ile astrolojiye farklı bakış</span>
+      </div>
+    </div>
+    <div class="tema-sec" role="group" aria-label="Görünüm">
+      <button type="button" data-t="bauhaus" aria-pressed="true">Bauhaus</button>
+      <button type="button" data-t="brutalist" aria-pressed="false">Brutalist</button>
+      <button type="button" data-t="rasat" aria-pressed="false">Rasat</button>
+      <button type="button" data-t="minyatur" aria-pressed="false">Minyatür</button>
+      <span class="tema-ayrac"></span>
+      <button type="button" data-t="okuma" aria-pressed="false" title="Uzun metin için: geniş satır aralığı, sıcak kâğıt">Okuma</button>
+      <button type="button" data-t="gece" aria-pressed="false" title="Akşam seansı için: mavi ışık düşük">Gece</button>
+      <button type="button" data-t="karsitlik" aria-pressed="false" title="Yorgun göz / projeksiyon: saf karşıtlık">Karşıtlık</button>
+      <span class="boy-sec" role="group" aria-label="Yazı boyutu">
+        <button type="button" data-boy="" aria-pressed="true" title="Normal yazı (Alt+A)">A</button>
+        <button type="button" data-boy="buyuk" aria-pressed="false" title="Büyük yazı">A</button>
+        <button type="button" data-boy="cok-buyuk" aria-pressed="false" title="Çok büyük yazı">A</button>
+      </span>
+    </div>
+    <div style="display:none">
+    </div>
+    <div class="serit-meta">
+      <span>v13.3 · Sahne</span><span class="ayrac"></span>
+      <span>Swiss Ephemeris</span><span class="ayrac"></span>
+      <span id="uptime">hazır</span>
+    </div>
+  </div>
+
+  <div class="kahraman">
+    <h1>Doğum haritasını<br>bir <em>alan</em> gibi okur.</h1>
+    <p class="kahraman-alt" id="kahramanAlt">Doğum verisini kur, haritayı hesapla ve yorum katmanlarını tek çalışma alanında yönet.</p>
+  </div>
+</header>
+
+<section class="yonetici-merkez ym-v13" id="yoneticiMerkez" aria-label="Danışman komuta merkezi">
+  <div class="ym-komuta">
+    <div class="ym-bas">
+      <div>
+        <span class="ym-kicker">ZÎC v13.3 · Ayarlı Danışman OS</span>
+        <h2>Seansı yönet, veriyi değil.</h2>
+        <p>Önce neyin gerçekten belirgin olduğunu gör. Sonra Hüküm, Soru, Zaman ve Belge sahnelerinde konuş; ham ölçümler Rasathane'de kalsın.</p>
+      </div>
+      <div class="ym-durum" id="ymDurum"><i></i><span>Yeni analiz bekleniyor</span></div>
+    </div>
+    <div class="ym-akis" aria-label="Danışman akışı">
+      <span><b>01</b> Kurulum</span><i></i><span><b>02</b> Kanıt</span><i></i><span><b>03</b> Sahne</span><i></i><span><b>04</b> Belge</span>
+    </div>
+  </div>
+  <div class="ym-metrikler">
+    <div class="ym-metrik"><span>Oturum</span><strong id="ymOturum">—</strong><small>sunucu kilidi</small></div>
+    <div class="ym-metrik"><span>Tek AI motoru</span><strong id="ymModel">seçilmedi</strong><small id="ymModelAlt">analiz başında kilitlenir</small></div>
+    <div class="ym-metrik"><span>Zaman zemini</span><strong id="ymSolar">Natal</strong><small>Natal + yürürlükteki yıllık katman</small></div>
+    <div class="ym-metrik"><span>Kanıt kapsamı</span><strong id="ymSaglik">—</strong><small>MİZAN-5 + ŞAHİT-7</small></div>
+  </div>
+  <div class="ym-kategoriler" aria-label="Rasathane aileleri">
+    <span>Çekirdek</span><span>Zaman</span><span>Gerilim</span><span>Hareket</span><span>Mekân</span><span>Gelenek</span><span>İlişki</span>
+  </div>
+  <div class="ym-eylem">
+    <button type="button" id="ymYeni">Yeni analiz</button>
+    <button type="button" id="ymSonuca" disabled>Sahneyi aç</button>
+    <button type="button" id="ymKritik" disabled>Kanıt rotası</button>
+  </div>
+</section>
+
+<form class="blok" id="form" novalidate autocomplete="off">
+  <div class="blok-bas"><i class="im im-daire" style="background:var(--kirmizi)"></i>
+    <span class="no">01</span><h2>Analiz kurulumu</h2></div>
+  <div class="mod-secim">
+    <label><span class="etiket">Analiz modu</span>
+      <select id="mod">
+        <option value="kisisel">Kişisel</option>
+        <option value="sinastri">Sinastri — iki harita üst üste</option>
+        <option value="kompozit">Kompozit — ilişkinin kendi haritası</option>
+      </select></label>
+    <p class="mod-aciklama" id="modAciklama">Tek kişilik okuma.</p>
+  </div>
+
+  <div class="kisi-bas" id="kisiBasA" style="display:none">
+    <i style="background:var(--kirmizi)"></i><span>Kişi A</span></div>
+  <div class="izgara">
+    <label><span class="etiket">Ad</span><input id="ad" value="Danışan"></label>
+    <label><span class="etiket">Tarih</span><input type="date" id="tarih" value="1990-06-21" required></label>
+    <label><span class="etiket">Saat</span><input type="time" id="saat" value="14:30" required></label>
+    <label><span class="etiket">Ülke</span><select id="ulke"></select></label>
+  </div>
+  <div class="izgara" style="margin-top:18px">
+    <label><span class="etiket">Bölge / İl</span><select id="il"></select></label>
+    <label><span class="etiket">Şehir / İlçe</span><select id="ilce"></select></label>
+    <label><span class="etiket">Enlem (K +)</span><input type="number" inputmode="decimal" id="enlem" step="0.0001" value="40.8000" required></label>
+    <label><span class="etiket">Boylam (D +)</span><input type="number" inputmode="decimal" id="boylam" step="0.0001" value="29.4333" required></label>
+  </div>
+  <div class="izgara" style="margin-top:18px">
+    <label><span class="etiket">Saat dilimi</span><select id="tz"></select></label>
+    <label data-teknik="1"><span class="etiket">Ev sistemi</span>
+      <select id="ev"><option value="P">Placidus</option><option value="W">Whole Sign</option>
+      <option value="K">Koch</option><option value="R">Regiomontanus</option></select></label>
+  </div>
+
+  <div id="tzOnizleme" class="onizleme">Saat dilimi çözülüyor…</div>
+
+  <details class="ek" id="rektPanel" data-teknik="1">
+    <summary>Doğum saatimden emin değilim — olaylardan çöz</summary>
+    <p class="ipucu" style="margin-top:12px">Saatin yuvarlaksa (07:00, 12:30)
+      muhtemelen tahmindir. Hayatında <b>keskin tarihli</b> 3–6 olay yaz; sistem
+      aday saatleri tarayıp hangisinin bu olaylara oturduğunu bulur. Sonuç kesin
+      değilse saatin <b>değiştirilmez</b>.</p>
+    <div id="olayListe"></div>
+    <button type="button" class="indir" id="olayEkle" style="margin-top:12px">+ Olay ekle</button>
+  </details>
+
+  <details class="ek">
+    <summary id="ekOzetA">Ek katmanlar</summary>
+    <div class="izgara">
+      <label><span class="etiket">Tam ad (ebced)</span><input id="isim" placeholder="nüfustaki imlâ"></label>
+      <label><span class="etiket">Anne adı</span><input id="anne" placeholder="isteğe bağlı"></label>
+      <label class="solar-sec"><span class="etiket">Solar Return</span>
+        <span class="solar-kontrol"><input type="checkbox" id="srAktif"> <span>Yıllık haritayı bağla</span></span>
+        <input type="number" inputmode="numeric" id="sryil" value="2026" min="1800" max="2200" disabled>
+      </label>
+      <label><span class="etiket">Ofseti elle ez</span><input type="number" inputmode="decimal" id="ofset" step="0.25" placeholder="boş bırakın"></label>
+    </div>
+    <p class="ipucu">Ofseti yalnız saat diliminin yanlış çözüldüğünden eminseniz doldurun.
+      Boş bırakılırsa IANA veritabanı yaz saati tarihçesini kendisi uygular.</p>
+  </details>
+
+  <div id="kisiB" style="display:none">
+    <div class="kisi-bas"><i style="background:var(--mavi)"></i><span>Kişi B</span></div>
+    <div class="izgara">
+      <label><span class="etiket">Ad</span><input id="ad2" value="Eş"></label>
+      <label><span class="etiket">Tarih</span><input type="date" id="tarih2" value="1992-04-11"></label>
+      <label><span class="etiket">Saat</span><input type="time" id="saat2" value="09:20"></label>
+      <label><span class="etiket">Ülke</span><select id="ulke2"></select></label>
+    </div>
+    <div class="izgara" style="margin-top:18px">
+      <label><span class="etiket">Bölge / İl</span><select id="il2"></select></label>
+      <label><span class="etiket">Şehir / İlçe</span><select id="ilce2"></select></label>
+      <label><span class="etiket">Enlem (K +)</span><input type="number" inputmode="decimal" id="enlem2" step="0.0001" value="41.0082"></label>
+      <label><span class="etiket">Boylam (D +)</span><input type="number" inputmode="decimal" id="boylam2" step="0.0001" value="28.9784"></label>
+      <label><span class="etiket">Saat dilimi</span><select id="tz2"></select></label>
+    </div>
+    <div id="tzOnizleme2" class="onizleme">—</div>
+    <details class="ek">
+      <summary>Kişi B — ek katmanlar</summary>
+      <div class="izgara">
+        <label><span class="etiket">Tam ad (ebced)</span><input id="isim2" placeholder="nüfustaki imlâ"></label>
+        <label><span class="etiket">Anne adı</span><input id="anne2" placeholder="isteğe bağlı"></label>
+        <label class="solar-sec"><span class="etiket">Solar Return</span>
+          <span class="solar-kontrol"><input type="checkbox" id="srAktif2"> <span>Yıllık haritayı bağla</span></span>
+          <input type="number" inputmode="numeric" id="sryil2" value="2026" min="1800" max="2200" disabled>
+        </label>
+        <label><span class="etiket">Ofseti elle ez</span><input type="number" inputmode="decimal" id="ofset2" step="0.25" placeholder="boş bırakın"></label>
+      </div>
+    </details>
+  </div>
+  <p class="ipucu" data-terim="1">Saat yuvarlaksa (07:00, 12:30) muhtemelen tahmindir. Ev katmanı ±15 dakikadan sonra güvenilmez; Berzah kararsız denge noktasıdır, girdi hatası çıktıda büyür.</p>
+  <p class="ipucu" data-sade="1" hidden>Doğum saatiniz ne kadar kesinse okuma o kadar isabetli olur.</p>
+
+  <section class="ai-secim-karti" aria-labelledby="aiModelBaslik">
+    <div class="ai-secim-bas">
+      <div><span class="etiket" id="aiModelBaslik">Yorumlama motoru</span>
+        <strong>AI modeli</strong></div>
+      <span class="model-kilit-rozet" id="modelKilitBilgi">Analiz başlamadan seçilir</span>
+    </div>
+    <div class="ai-secim-grid">
+      <select id="modelSec" aria-label="AI modeli"><option value="">modeller yükleniyor…</option></select>
+      <input id="modelElle" placeholder="Model listesi alınamazsa model adını yazın" style="display:none">
+      <button type="button" class="indir model-degistir" id="modelKilidiAc" style="display:none">Yeni analiz için modeli değiştir</button>
+    </div>
+    <p class="ipucu">Seçilen model analiz oturumuna kilitlenir. Hüküm, sentez, rapor ve sohbet aynı model üzerinden devam eder; başka modele sessiz geçiş yapılmaz.</p>
+  </section>
+
+  <button class="hesapla" id="btn" type="submit">Haritamı yorumla</button>
+  <div class="durum" id="durum" role="status" aria-live="polite" style="display:none"></div>
+</form>
+
+<section id="sahneKabuk" class="sahne-kabuk" hidden aria-label="Danışman sahnesi">
+  <div class="sahne-ust">
+    <div><span class="sahne-kicker">Danışman sahnesi</span><strong id="sahneDanisan">—</strong></div>
+    <nav id="sahneSekmeler" class="sahne-sekmeler" aria-label="Sahneler"></nav>
+  </div>
+  <div id="ayarSerit" class="ayar-serit" hidden></div>
+  <div id="defterSerit" class="ayar-serit defter-serit" hidden></div>
+  <input id="defterYukleDosya" type="file" accept="application/json,.json" hidden>
+  <div id="sahneAna" class="sahne-ana"></div>
+</section>
+
+<main id="sonuc"></main>
+
+<footer>
+  Buradaki okumalar bir gözlem aracıdır; kesin hüküm değildir. Sağlık,
+  hukuk ve para konularında karar vermeden önce o alanın uzmanına danışın.
+  Ömür, ölüm tarihi ya da tıbbî teşhis üretilmez.
+</footer>
+</div>
+
+<script src="/static/uygulama.js" defer></script>
+</body>
+</html>
